@@ -1,0 +1,61 @@
+uses math;
+var
+a,b,c,n,i:integer;
+m:char;
+begin
+readln(n);
+a:=0;
+b:=0;
+c:=0;
+for i:= 1 to n do
+  begin
+  read(m);
+  case m of
+   'a','A':a:=a+1;
+   'b','B':b:=b+1;
+   'c','C':c:=c+1;
+  end;
+ end;
+begin
+ if (c=max(a,c)) and (c=max(b,c)) then
+  begin
+   writeln('c',' ',c);
+  end;
+ if (b=max(a,b)) and (b=max(b,c)) then
+  begin
+   writeln('b',' ',b);
+  end;
+ if (a=max(a,b)) and (a=max(a,c)) then
+  begin
+   writeln('a',' ',a);
+  end;
+end;
+begin
+ if ((c<b) and (c>a)) or ((c>b) and (c<a)) then
+  begin
+   writeln('c',' ',c);
+  end;
+ if ((b<a) and (b>c)) or ((b>a) and (b<c)) then
+  begin
+   writeln('b',' ',b);
+  end;
+ if ((a<b) and (a>c)) or ((a>b) and (a<c)) then
+  begin
+   writeln('a',' ',a);
+  end;
+end;
+begin
+ if (a=min(a,b)) and (a=min(a,c)) then
+  begin
+   writeln('a',' ',a);
+  end;
+ if (b=min(a,b)) and (b=min(b,c)) then
+  begin
+   writeln('b',' ',b);
+  end;
+ if (c=min(a,c)) and (c=min(b,c)) then
+  begin
+   writeln('c',' ',c);
+  end;
+end;
+end.

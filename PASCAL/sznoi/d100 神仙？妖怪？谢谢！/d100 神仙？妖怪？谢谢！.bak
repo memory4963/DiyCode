@@ -1,0 +1,82 @@
+var
+year,month:integer;
+w,s:integer;  //sun:0  mon:1 tue:2 wed:3  thu:4  fri:5  sat:6
+run:boolean;  // true:run;;false:ping;
+i,n,m,p,k:integer;
+// xunhuan; k:每月第一天在一年中的总天数
+//n:每月第一天是周几
+//p:第month月有几天
+begin
+readln(year,month);
+s:=trunc(year-1+((year-1)/4)-((year-1)/100)+((year-1)/400)+1);
+w:=s mod 7;
+if (year mod 4=0) then run:=true else run:=false;
+if run then begin
+             case month of
+              1:k:=1;
+              2:k:=32;
+              3:k:=61;
+              4:k:=92;
+              5:k:=122;
+              6:k:=153;
+              7:k:=183;
+              8:k:=214;
+              9:k:=245;
+              10:k:=275;
+              11:k:=306;
+              12:k:=336;
+             end
+            end
+else begin
+   case month of
+              1:k:=1;
+              2:k:=32;
+              3:k:=61-1;
+              4:k:=92-1;
+              5:k:=122-1;
+              6:k:=153-1;
+              7:k:=183-1;
+              8:k:=214-1;
+              9:k:=245-1;
+              10:k:=275-1;
+              11:k:=306-1;
+              12:k:=336-1;
+       end;
+     end;
+n:=w;
+begin         //对P讨论
+if run then begin
+                 case month of
+                  1,3,5,7,8,10,12:p:=31;
+                  4,6,9,11:p:=30;
+                  2:p:=29;
+                 end
+end else
+ begin
+                 case month of
+                  1,3,5,7,8,10,12:p:=31;
+                  4,6,9,11:p:=30;
+                  2:p:=28;
+                 end
+end;
+end;
+for i:= 2 to k do
+ begin
+  n:=n+1;
+  if n=7 then n:=0;
+ end;
+begin //output
+writeln('Sun Mon Tue Wed Thu Fri Sat');
+for i:= 1 to n do write('    ');
+m:=n;
+for i:= 1 to p do
+begin
+ m:=m+1;
+ if m=7 then begin
+ writeln;
+ m:=0;
+ end;
+ write(i:4)
+end;
+end;
+end.

@@ -1,0 +1,17 @@
+var
+n,m,i:integer;
+t:ansistring;
+begin
+i:=0;
+readln(n);
+readln(t);
+repeat
+  m:=0;
+  repeat
+   i:=i+1;
+   m:=m+1;
+   write(t[i]);
+  until m>=n;
+  writeln;
+until i=length(t);
+end.

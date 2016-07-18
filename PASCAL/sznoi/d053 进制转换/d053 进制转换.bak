@@ -1,0 +1,7 @@
+var
+a,x:integer;
+begin
+readln(a);
+x:=a;
+writeln(x,$a);
+end.

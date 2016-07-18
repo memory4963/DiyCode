@@ -1,0 +1,10 @@
+var
+a,b:integer;
+begin
+b:=0;
+repeat
+read(a);
+b:=b+a;
+until eoln;
+writeln(b);
+end.

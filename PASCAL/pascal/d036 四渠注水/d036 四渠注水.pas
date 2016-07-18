@@ -1,0 +1,9 @@
+var
+a,b,c,d,x,y:real;
+begin
+readln(a,b,c,d);
+x:=1/((1/a)+(1/b));
+y:=1/((1/a)+(1/b)+(1/c)+(1/d));
+writeln(x:0:2);
+writeln(y:0:2);
+end.

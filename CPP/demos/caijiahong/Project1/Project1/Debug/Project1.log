@@ -1,0 +1,156 @@
+﻿  源.cpp
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(81): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(81): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(81): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(81): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(178): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(178): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(178): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(178): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(272): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(272): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(272): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(272): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(282): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(282): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(282): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(282): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(284): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(284): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(284): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(284): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(286): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(286): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(286): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(286): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(288): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(288): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(288): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(288): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(290): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(290): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(290): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(290): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(304): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(304): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(304): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(304): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(306): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(306): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(306): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(306): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(308): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(308): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(308): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(308): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(310): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(310): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(310): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(310): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(312): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(312): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(312): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(312): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(326): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(326): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(326): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(326): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(328): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(328): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(328): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(328): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(330): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(330): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(330): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(330): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(332): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(332): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(332): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(332): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(257): warning C4101: “key_b_in”: 未引用的局部变量
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(353): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(353): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(353): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(353): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(369): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(369): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(369): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(369): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(371): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(371): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(371): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(371): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(373): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(373): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(373): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(373): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(375): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(375): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(375): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(375): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(377): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(377): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(377): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(377): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(379): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(379): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(379): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(379): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(389): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(389): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(389): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(389): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(409): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(409): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(409): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(409): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(411): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(411): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(411): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(411): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(413): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(413): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(413): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(413): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(415): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(415): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(415): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(415): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(417): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(417): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(417): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(417): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(419): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(419): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(419): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(419): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(429): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(429): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(429): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(429): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(449): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(449): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(449): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(449): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(451): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(451): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(451): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(451): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(453): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(453): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(453): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(453): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(455): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(455): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(455): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(455): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(459): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(459): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(459): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(459): note: 此参数用作缓冲区大小
+d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(469): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(469): note: 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(469): note: 缺失的可变参数 2 为格式字符串“%s”所需
+  d:\codes\codes\cpp\demos\caijiahong\project1\project1\源.cpp(469): note: 此参数用作缓冲区大小
+  Project1.vcxproj -> D:\Codes\Codes\CPP\demos\caijiahong\Project1\Debug\Project1.exe
+  Project1.vcxproj -> D:\Codes\Codes\CPP\demos\caijiahong\Project1\Debug\Project1.pdb (Partial PDB)

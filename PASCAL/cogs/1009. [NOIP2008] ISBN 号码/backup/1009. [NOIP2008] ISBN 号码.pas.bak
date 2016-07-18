@@ -1,0 +1,27 @@
+var
+n,m,i,k:integer;
+a:array[1..14]of char;
+b:array[1..13]of integer;
+begin
+ assign(input,'isbn.in');
+ assign(output,'isbn.out');
+ reset(input);
+ rewrite(output);
+ repeat
+ for i:= 1 to 13 do read(a[i]);
+ until eof;
+ b[1]:=ord(a[1])-48;
+ for i:= 3 to 5 do
+  b[i]:=ord(a[i])-48;
+ for i:= 7 to 11 do b[i]:=ord(a[i])-48;
+ b[13]:=ord(a[13])-48;
+ k:=(b[1]+2*b[3]+3*b[4]+4*b[5]+5*b[7]+6*b[8]+7*b[9]+8*b[10]+9*b[11]) mod 11;
+ if b[13]=k then write('RIGHT')
+  else
+    begin
+     for i:= 1 to 12 do write(a[i]);
+     write(k);
+    end;
+ close(input);
+ close(output);
+end.

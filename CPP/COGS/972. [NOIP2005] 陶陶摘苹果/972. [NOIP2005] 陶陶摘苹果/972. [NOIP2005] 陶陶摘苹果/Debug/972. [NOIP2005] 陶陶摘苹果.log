@@ -1,0 +1,4 @@
+﻿  源.cpp
+f:\穆逢君\2012 noip\刷题\cpp\cogs\972. [noip2005] 陶陶摘苹果\972. [noip2005] 陶陶摘苹果\972. [noip2005] 陶陶摘苹果\源.cpp(7): error C3867: “std::basic_fstream<char,std::char_traits<char>>::is_open”: 非标准语法；请使用 "&" 来创建指向成员的指针
+f:\穆逢君\2012 noip\刷题\cpp\cogs\972. [noip2005] 陶陶摘苹果\972. [noip2005] 陶陶摘苹果\972. [noip2005] 陶陶摘苹果\源.cpp(19): error C3867: “std::basic_fstream<char,std::char_traits<char>>::close”: 非标准语法；请使用 "&" 来创建指向成员的指针
+f:\穆逢君\2012 noip\刷题\cpp\cogs\972. [noip2005] 陶陶摘苹果\972. [noip2005] 陶陶摘苹果\972. [noip2005] 陶陶摘苹果\源.cpp(20): error C3867: “std::basic_fstream<char,std::char_traits<char>>::close”: 非标准语法；请使用 "&" 来创建指向成员的指针

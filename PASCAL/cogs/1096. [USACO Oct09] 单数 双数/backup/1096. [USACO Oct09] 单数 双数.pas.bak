@@ -1,0 +1,18 @@
+var
+n,i:integer;
+m:real;
+begin
+assign(input,'evenodd.in');
+assign(output,'evenodd.out');
+reset(input);
+rewrite(output);
+readln(n);
+for i:= 1 to n do
+begin
+readln(m);
+if trunc(m) mod 2=0 then writeln('even') else writeln('odd');
+end;
+close(input);
+close(output);
+end.
+

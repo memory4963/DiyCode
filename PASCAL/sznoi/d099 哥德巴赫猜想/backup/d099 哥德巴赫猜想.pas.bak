@@ -1,0 +1,23 @@
+var
+a,b,k,n,m,i:integer;
+t:array[2..10000]of boolean;
+begin
+readln(a);
+fillchar(t,sizeof(t),true);
+for i:= 2 to 9999 do
+ if t[i] then
+ begin
+  m:=1;
+  repeat
+    m:=m+1;
+    k:=m*i;
+    if (k<=10000) and (k>=2)   then t[k]:=false;
+  until k=10000;
+ end;
+ {
+for i:=1 to (a-1) do
+ k:=a-i;
+ if t[k] and t[i] then writeln(a,'=',i,'+',k);
+}
+ for i:= 1 to  100 do if t[i] then writeln(i);
+ end.

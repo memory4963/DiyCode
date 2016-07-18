@@ -1,0 +1,19 @@
+var
+n,i:integer;
+ai,bi,q:real;
+begin
+assign(input,'dog.in');
+assign(output,'dog.out');
+reset(input);
+rewrite(output);
+readln(n);
+q:=0;
+for i:= 1 to n do
+ begin
+  readln(ai,bi);
+  q:=q+(ai*bi/10);
+ end;
+writeln(q:0:2);
+close(input);
+close(output);
+end.

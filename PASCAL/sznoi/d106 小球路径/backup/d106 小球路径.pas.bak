@@ -1,0 +1,12 @@
+var
+a,b,c,d:real;
+begin
+readln(a);
+b:=1;
+while b>=0.001*a do
+begin
+c:=c+b*a;
+b:=0.7*b;
+end;
+writeln(c);
+end.

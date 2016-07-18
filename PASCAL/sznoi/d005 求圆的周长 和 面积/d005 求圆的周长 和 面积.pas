@@ -1,0 +1,11 @@
+const
+pai=3.1415;
+var
+r,c,s:real;
+begin
+readln(r);
+c:=pai*2*r;
+s:=pai*r*r;
+writeln(c:0:2);
+writeln(s:0:2);
+end.

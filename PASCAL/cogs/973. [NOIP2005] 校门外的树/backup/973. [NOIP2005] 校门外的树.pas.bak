@@ -1,0 +1,12 @@
+var
+l,m,a,b,tree,i:integer;
+begin
+readln(l,m);
+tree:=l+1;
+for i:= 1 to m do
+ begin
+ readln(a,b);
+ tree:=tree-b+a-1;
+ end;
+writeln(tree);
+end.

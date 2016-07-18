@@ -1,0 +1,22 @@
+var
+n,b,i,j:integer;
+a:array[0..1000] of integer;
+begin
+n:=0;
+while eof do
+begin
+ n:=n+1;
+ readln(a[n]);
+end;
+for i:= 1 to n-1 do
+ for j:=n downto i+1 do
+  if a[j-1]>a[j] then
+   begin
+    b:=a[j];
+    a[j]:=a[j-1];
+    a[j-1]:=b;
+   end;
+for i:= 1 to n do
+ writeln(a[i]);
+end.
+

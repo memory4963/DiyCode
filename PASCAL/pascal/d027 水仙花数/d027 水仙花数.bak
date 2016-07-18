@@ -1,0 +1,11 @@
+var
+a,b,c,d,e,f:integer;
+begin
+for a:=100 to 999 do
+ begin
+  d:=a div 100;
+  e:=(a div 10)-100*d;
+  f:=a mod 10;
+if a=d*d*d+e*e*e+f*f*f then writeln(a);
+ end;
+end.

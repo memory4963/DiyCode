@@ -1,0 +1,13 @@
+var
+a,b:real;
+d:char;
+begin
+read(a,b);
+read(d);
+case d of
+ '+':write(a+b:0:2);
+ '-':write(a-b:0:2);
+ '*':write(a*b:0:2);
+ '/':write(a/b:0:2);
+end;
+end.

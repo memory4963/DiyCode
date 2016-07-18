@@ -1,0 +1,14 @@
+var
+a,b:real;
+i:integer;
+begin
+b:=13;
+readln(a);
+a:=(0.01*a)+1;
+while b<=20 do
+ begin
+  i:=i+1;
+  b:=b*a;
+ end;
+writeln(i);
+end.
