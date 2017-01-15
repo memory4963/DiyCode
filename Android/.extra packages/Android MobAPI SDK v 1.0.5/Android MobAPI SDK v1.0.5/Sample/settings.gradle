@@ -1,3 +1,0 @@
-include ':MobAPI', ':MobAPISample'
-project(':MobAPI').projectDir=new File('Projects/MobAPI')
-project(':MobAPISample').projectDir=new File('Projects/MobAPISample')

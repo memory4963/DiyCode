@@ -1,9 +1,0 @@
-var
-a,b,m:integer;
-begin
-readln(a,b);
-repeat
- m:=m+1;
-until a*m>b;
-writeln(m);
-end.
