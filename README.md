@@ -1,2 +1,2 @@
-# motoAndroid
-UESTC  银杏黄
+# DiyCode android端客户端
+[DiyCode](www.diycode.cc)
