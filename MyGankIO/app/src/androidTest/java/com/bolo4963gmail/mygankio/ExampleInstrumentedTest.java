@@ -1,13 +1,14 @@
 package com.bolo4963gmail.mygankio;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
+
+import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewAdapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
+import javax.inject.Inject;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -17,11 +18,16 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
 
+    private static final String TAG = "ExampleInstrumentedTest";
+
+    @Inject RecyclerViewAdapter adapter;
+
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        if (adapter != null) {
+            Log.d(TAG, "useAppContext: adapter is not null");
+        }
 
-        assertEquals("com.bolo4963gmail.mygankio", appContext.getPackageName());
     }
 }

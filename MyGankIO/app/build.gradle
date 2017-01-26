@@ -34,4 +34,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
 }

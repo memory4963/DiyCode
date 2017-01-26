@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:listDivider">@drawable/divider</item>
     </style>
+
+    <style name="Theme.Start" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_image</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
     
     <style name="FullscreenTheme" parent="AppTheme">
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>

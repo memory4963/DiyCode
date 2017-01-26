@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -13,7 +12,7 @@ import android.view.View;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -26,6 +25,8 @@ public class SplashActivity extends AppCompatActivity {
      * user interaction before hiding the system UI.
      */
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+
+    private boolean backPressed = false;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -78,17 +79,26 @@ public class SplashActivity extends AppCompatActivity {
     };
 
     @Override
+    public void onBackPressed() {
+        backPressed = true;
+        ActivityCollector.finishAll();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
 
-        mVisible = true;
+        if (!backPressed) {
+            mVisible = true;
 
-        Intent intent = new Intent(this, ContentActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
 
-        finish();
+            SplashActivity.this.finish();
+
+        }
     }
 
     private void toggle() {
