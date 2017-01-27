@@ -11,12 +11,20 @@ import com.bolo4963gmail.mygankio.App;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    public DbHelper(int version) {
-        super(App.getContext(), DbController.DB_NAME, null, version);
+    private static DbHelper dbHelper = new DbHelper();
+
+    public DbHelper() {
+        super(App.getContext(), DbController.DB_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        //建立user_information表
+        db.execSQL("create if not exists " + DbController.USER_INFORMATION_TABLE + " ("
+                           + DbController.TOKEN + " text, "
+                           + DbController.REFRESH_TOKEN + " text, "
+                           + DbController.HEAD_IMAGE_PATH + " text)");
 
     }
 
@@ -24,4 +32,9 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+    public static DbHelper getDbHelper() {
+        return dbHelper;
+    }
+
 }
