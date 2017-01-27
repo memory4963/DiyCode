@@ -17,13 +17,11 @@ class DbController {
     static final String REFRESH_TOKEN = "refresh_token";
     static final String HEAD_IMAGE_PATH = "head_image_path";
 
-    static SQLiteDatabase getDatabase() {
+    static SQLiteDatabase getDatabase() throws Exception {
         if (db == null) {
             db = DbHelper.getDbHelper().getWritableDatabase();
         }
         return db;
     }
-
-
 
 }

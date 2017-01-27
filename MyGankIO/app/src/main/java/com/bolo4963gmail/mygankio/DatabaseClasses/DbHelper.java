@@ -11,7 +11,7 @@ import com.bolo4963gmail.mygankio.App;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static DbHelper dbHelper = new DbHelper();
+    private static DbHelper dbHelper;
 
     public DbHelper() {
         super(App.getContext(), DbController.DB_NAME, null, 1);
@@ -33,7 +33,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    public static DbHelper getDbHelper() {
+    public static void init() {
+        dbHelper = new DbHelper();
+    }
+
+    public static DbHelper getDbHelper() throws Exception {
+        if (dbHelper == null) {
+            throw new Exception("请先调用init()方法。[Please invoke init() first.]");
+        }
         return dbHelper;
     }
 
