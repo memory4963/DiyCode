@@ -2,6 +2,8 @@ package com.bolo4963gmail.mygankio;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.bolo4963gmail.mygankio.ReceiverClasses.NetworkChangeReceiver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class ActivityCollector {
     }
 
     public static void finishAll() {
+
+        App.getContext().unregisterReceiver(NetworkChangeReceiver.ReceiverProvider.getReceiver());
+
         for (AppCompatActivity activity : activities) {
             if (!activity.isFinishing()) {
                 activity.finish();

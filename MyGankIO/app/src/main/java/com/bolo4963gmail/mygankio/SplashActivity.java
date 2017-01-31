@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.bolo4963gmail.mygankio.SharedPreferencesClasses.PreferencesController;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -91,6 +93,8 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
 
         if (!backPressed) {
+            PreferencesController.init();
+
             mVisible = true;
 
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);

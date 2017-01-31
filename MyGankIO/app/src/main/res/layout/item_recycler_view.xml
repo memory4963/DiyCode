@@ -1,15 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="72dp"
+    android:background="@drawable/child_background"
+    >
+
+    <ImageView
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:id="@+id/authorHeadIv"
+        android:src="@drawable/child_view_circle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"/>
 
     <TextView
-        android:layout_centerInParent="true"
-        android:textSize="24sp"
-        android:text="TextView"
-        android:layout_margin = "16dp"
+        android:id="@+id/replyCountTv"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="回复数"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"/>
+        android:layout_alignBaseline="@+id/authorNameTv"
+        android:layout_alignBottom="@+id/authorNameTv"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/sortTv"
+        android:text="sort"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/authorHeadIv"
+        android:layout_toRightOf="@+id/authorHeadIv"
+        android:layout_toEndOf="@+id/authorHeadIv"/>
+
+    <TextView
+        android:id="@+id/authorNameTv"
+        android:text="author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sortTv"
+        android:layout_alignBottom="@+id/sortTv"
+        android:layout_toRightOf="@+id/transitionTv"
+        android:layout_toEndOf="@+id/transitionTv"/>
+
+    <TextView
+        android:id="@+id/transitionTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" · "
+        android:layout_alignBaseline="@+id/sortTv"
+        android:layout_alignBottom="@+id/sortTv"
+        android:layout_toRightOf="@+id/sortTv"
+        android:layout_toEndOf="@+id/sortTv"/>
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="title"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:layout_alignTop="@+id/authorHeadIv"
+        android:layout_alignLeft="@+id/sortTv"
+        android:layout_alignStart="@+id/sortTv"/>
+
 </RelativeLayout>

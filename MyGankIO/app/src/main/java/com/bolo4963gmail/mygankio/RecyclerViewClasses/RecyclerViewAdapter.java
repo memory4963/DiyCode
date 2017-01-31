@@ -17,15 +17,14 @@ import javax.inject.Inject;
  * Created by 10733 on 2016/12/14.
  */
 
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<String> mData;
+    private List<ChildView> mData;
 
     @Inject
-    public RecyclerViewAdapter(Context context, List<String> data) {
+    public RecyclerViewAdapter(Context context, List<ChildView> data) {
         this.mContext = context;
         this.mData = data;
         mInflater = LayoutInflater.from(context);
@@ -39,12 +38,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.textView.setText(mData.get(position));
+        // TODO: 2017/1/28 设置childView的控件
+//        holder.textView.setText("");
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        // TODO: 2017/1/28 长度
+        return 10;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +54,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.textView);
         }
     }
 }

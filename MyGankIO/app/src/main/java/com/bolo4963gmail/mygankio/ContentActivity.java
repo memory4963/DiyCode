@@ -7,21 +7,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
-
-import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewAdapter;
-import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewDecoration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,9 +31,6 @@ public class ContentActivity extends BaseActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    List<String> list = new ArrayList<>();
-
-    @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapsingToolbarLayout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.fab) FloatingActionButton fab;
@@ -51,14 +41,8 @@ public class ContentActivity extends BaseActivity {
         setContentView(R.layout.activity_content);
         ButterKnife.bind(this);
 
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        for (int i = 0; i < 100; i++) {
-
-            //设置显示内容
-            list.add("textView");
-        }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Toolbar
         setSupportActionBar(toolbar);
@@ -66,16 +50,6 @@ public class ContentActivity extends BaseActivity {
 
         // CollapsingToolbarLayout
         collapsingToolbarLayout.setTitle("干货集中营");
-
-        // RecyclerView
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, list);
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.addItemDecoration(
-                new RecyclerViewDecoration(this, RecyclerViewDecoration.VERTICAL_LIST));
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

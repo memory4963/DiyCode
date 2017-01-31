@@ -11,10 +11,12 @@ import com.bolo4963gmail.mygankio.App;
 
 public class PreferencesController {
 
-    private static final String TOKEN = "token";
-    private static final String REFRESH_TOKEN = "refresh_token";
-    private static final String HEAD_IMAGE_PATH = "head_image_path";
-    private static final String PREFERENCES_NAME = "shared_preferences";
+    public static final String TOKEN = "token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String USER_NAME = "user_name";
+    public static final String USER_MAIL = "user_mail";
+    public static final String HEAD_IMAGE_URL = "head_image_path";
+    public static final String PREFERENCES_NAME = "shared_preferences";
 
     private static SharedPreferences sharedPreferences;
 
@@ -26,25 +28,26 @@ public class PreferencesController {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(TOKEN, "");
             editor.putString(REFRESH_TOKEN, "");
-            editor.putString(HEAD_IMAGE_PATH, "");
+            editor.putString(USER_NAME, "");
+            editor.putString(USER_MAIL, "");
+            editor.putString(HEAD_IMAGE_URL, "");
             editor.apply();
         }
     }
 
-    public static String getString(String key) throws Exception {
+    public static String getString(String key) {
         if (sharedPreferences == null) {
-            throw new Exception(
-                    "先调用init()再调用getSharedPreferences()。[Please invoke method init() first.]");
+            return null;
         }
         return sharedPreferences.getString(key, "");
     }
 
-    public static void setPreferences(String key, String data) throws Exception {
+    public static boolean setPreferences(String key, String data) {
         if (sharedPreferences == null) {
-            throw new Exception(
-                    "先调用init()再调用getSharedPreferences()。[Please invoke method init() first.]");
+            return false;
         }
         sharedPreferences.edit().putString(key, data).apply();
+        return true;
     }
     
 }
