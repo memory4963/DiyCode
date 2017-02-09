@@ -20,7 +20,7 @@ public class PreferencesController {
 
     private static SharedPreferences sharedPreferences;
 
-    public static void init() {
+    public static synchronized void init() {
         sharedPreferences =
                 App.getContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
 
@@ -37,17 +37,16 @@ public class PreferencesController {
 
     public static String getString(String key) {
         if (sharedPreferences == null) {
-            return null;
+            init();
         }
         return sharedPreferences.getString(key, "");
     }
 
-    public static boolean setPreferences(String key, String data) {
+    public static void setPreferences(String key, String data) {
         if (sharedPreferences == null) {
-            return false;
+            init();
         }
         sharedPreferences.edit().putString(key, data).apply();
-        return true;
     }
     
 }

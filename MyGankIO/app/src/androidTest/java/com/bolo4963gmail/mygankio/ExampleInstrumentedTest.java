@@ -1,14 +1,13 @@
 package com.bolo4963gmail.mygankio;
 
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewAdapter;
+import com.bolo4963gmail.mygankio.ConnectionClasses.OkHttpConnection;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
+import java.util.Map;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -20,14 +19,12 @@ public class ExampleInstrumentedTest {
 
     private static final String TAG = "ExampleInstrumentedTest";
 
-    @Inject RecyclerViewAdapter adapter;
-
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
-        if (adapter != null) {
-            Log.d(TAG, "useAppContext: adapter is not null");
+        Map<String, String> map = OkHttpConnection.login("bolo4963@gmail.com", "456rtyFGHvbn");
+        if (map != null) {
+            System.out.print("token" + map.get("token"));
         }
-
     }
 }

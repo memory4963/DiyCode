@@ -1,10 +1,12 @@
 package com.bolo4963gmail.mygankio.GsonClasses;
 
+import java.io.Serializable;
+
 /**
  * Created by 10733 on 2017/1/30.
  */
 
-public class ProjectsGson {
+public class ProjectsGson implements Serializable {
     
     /**
      * id : 16938

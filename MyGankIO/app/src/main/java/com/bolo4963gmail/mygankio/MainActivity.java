@@ -1,12 +1,15 @@
 package com.bolo4963gmail.mygankio;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bolo4963gmail.mygankio.RecyclerViewClasses.ChildView;
+import com.bolo4963gmail.mygankio.ConnectionClasses.OkHttpConnection;
+import com.bolo4963gmail.mygankio.GsonClasses.TopicsGson;
 import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewAdapter;
 import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewDecoration;
+import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewHolder;
 import com.bolo4963gmail.mygankio.SharedPreferencesClasses.PreferencesController;
 
 import java.util.ArrayList;
@@ -38,19 +43,37 @@ public class MainActivity extends BaseActivity
     private long time = 0;
 
     // TODO: 2017/1/27 编辑list
-    List<ChildView> communityList = new ArrayList<>();
-    List<ChildView> projectList;
-    List<ChildView> newsList;
+    List<RecyclerViewHolder> communityList = new ArrayList<>();
+    List<RecyclerViewHolder> projectList;
+    List<RecyclerViewHolder> newsList;
+    private RecyclerViewAdapter adapter;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawerLayout) DrawerLayout drawer;
     @BindView(R.id.navView) NavigationView navigationView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-//    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefresh;
 
     ImageView headImage;
     TextView userName;
+
+    public static final int GOT_TOPICS = 12343;
+
+    private Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case GOT_TOPICS:
+                    TopicsGson topicsGson = (TopicsGson) msg.obj;
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +82,21 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
+        //设置OKHttpConnection回调接口
+        OkHttpConnection.setHandler(handler);
+
         toolbar.setTitle("DiyCode");
 
         //判断是否登录
         String token = PreferencesController.getString(PreferencesController.TOKEN);
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                OkHttpConnection.login("bolo4963@gmail.com", "456rtyFGHvbn");
+            }
+        }).start();
         if (token.equals("")) {
             //未登录
             // TODO: 2017/1/31 编写登录选项
@@ -93,13 +127,18 @@ public class MainActivity extends BaseActivity
         headImage = (ImageView) hView.findViewById(R.id.user_head_image);
         userName = (TextView) hView.findViewById(R.id.user_name);
 
+        //获取topics
+        // TODO: 2017/2/9 改进 降低耦合性
+        OkHttpConnection.getTopics(null, 0);
+
         //recyclerView
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, communityList);
+        adapter = new RecyclerViewAdapter(this, communityList);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(//分割线
+        //分割线
+        recyclerView.addItemDecoration(
                                        new RecyclerViewDecoration(this,
                                                                   LinearLayoutManager.VERTICAL, 12,
                                                                   getResources().getColor(

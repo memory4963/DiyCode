@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.bolo4963gmail.mygankio.R;
 
@@ -17,27 +16,31 @@ import javax.inject.Inject;
  * Created by 10733 on 2016/12/14.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
 
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<ChildView> mData;
+    private List<RecyclerViewHolder> mData;
 
     @Inject
-    public RecyclerViewAdapter(Context context, List<ChildView> data) {
+    public RecyclerViewAdapter(Context context, List<RecyclerViewHolder> data) {
         this.mContext = context;
         this.mData = data;
         mInflater = LayoutInflater.from(context);
     }
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.item_recycler_view, parent, false);
-        return new MyViewHolder(view);
+    public void ChangeList(List<RecyclerViewHolder> data) {
+        this.mData = data;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.item_recycler_view, parent, false);
+        return new RecyclerViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         // TODO: 2017/1/28 设置childView的控件
 //        holder.textView.setText("");
     }
@@ -48,12 +51,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return 10;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView textView;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
 }

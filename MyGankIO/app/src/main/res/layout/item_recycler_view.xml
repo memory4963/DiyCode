@@ -19,7 +19,8 @@
         android:id="@+id/replyCountTv"
         android:layout_marginRight="24dp"
         android:layout_marginEnd="24dp"
-        android:text="回复数"
+        android:textStyle="bold"
+        android:text="reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/authorNameTv"
@@ -47,6 +48,26 @@
         android:layout_alignBottom="@+id/sortTv"
         android:layout_toRightOf="@+id/transitionTv"
         android:layout_toEndOf="@+id/transitionTv"/>
+
+    <TextView
+        android:id="@+id/releaseTimeTv"
+        android:text="releaseTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sortTv"
+        android:layout_alignBottom="@+id/sortTv"
+        android:layout_toRightOf="@+id/transition2Tv"
+        android:layout_toEndOf="@+id/transition2Tv"/>
+
+    <TextView
+        android:id="@+id/transition2Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" · "
+        android:layout_alignBaseline="@+id/authorNameTv"
+        android:layout_alignBottom="@+id/authorNameTv"
+        android:layout_toRightOf="@+id/authorNameTv"
+        android:layout_toEndOf="@+id/authorNameTv"/>
 
     <TextView
         android:id="@+id/transitionTv"
