@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:background="@drawable/child_background"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="@drawable/recycler_bg"
     >
 
     <ImageView
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="12dp"
         android:id="@+id/authorHeadIv"
         android:src="@drawable/child_view_circle"
         android:layout_width="48dp"
-        android:layout_height="48dp"/>
+        android:layout_height="48dp"
+        android:contentDescription="userHeadImage"/>
+
+    <TextView
+        android:id="@+id/replyTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="回复数："
+        android:layout_toLeftOf="@+id/replyCountTv"
+        android:layout_toStartOf="@id/replyCountTv"
+        android:layout_alignBottom="@id/replyCountTv"/>
 
     <TextView
         android:id="@+id/replyCountTv"
@@ -23,21 +33,10 @@
         android:text="reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/authorNameTv"
-        android:layout_alignBottom="@+id/authorNameTv"
+        android:layout_alignBaseline="@+id/releaseTimeTv"
+        android:layout_alignBottom="@+id/releaseTimeTv"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
-
-    <TextView
-        android:id="@+id/sortTv"
-        android:text="sort"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/authorHeadIv"
-        android:layout_toRightOf="@+id/authorHeadIv"
-        android:layout_toEndOf="@+id/authorHeadIv"/>
 
     <TextView
         android:id="@+id/authorNameTv"
@@ -51,23 +50,15 @@
 
     <TextView
         android:id="@+id/releaseTimeTv"
+        android:paddingBottom="8dp"
         android:text="releaseTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/sortTv"
-        android:layout_alignBottom="@+id/sortTv"
-        android:layout_toRightOf="@+id/transition2Tv"
-        android:layout_toEndOf="@+id/transition2Tv"/>
-
-    <TextView
-        android:id="@+id/transition2Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" · "
-        android:layout_alignBaseline="@+id/authorNameTv"
-        android:layout_alignBottom="@+id/authorNameTv"
-        android:layout_toRightOf="@+id/authorNameTv"
-        android:layout_toEndOf="@+id/authorNameTv"/>
+        android:layout_below="@id/sortTv"
+        android:layout_toRightOf="@id/authorHeadIv"
+        android:layout_toEndOf="@id/authorHeadIv"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"/>
 
     <TextView
         android:id="@+id/transitionTv"
@@ -83,12 +74,25 @@
         android:id="@+id/titleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:maxLines="2"
         android:text="title"
+        android:ellipsize="end"
         android:textColor="#000000"
-        android:textSize="24sp"
-        android:layout_alignTop="@+id/authorHeadIv"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textSize="20sp"
         android:layout_alignLeft="@+id/sortTv"
-        android:layout_alignStart="@+id/sortTv"/>
+        android:layout_alignStart="@+id/sortTv"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/sortTv"
+        android:text="sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTv"
+        android:layout_alignLeft="@+id/releaseTimeTv"
+        android:layout_alignStart="@+id/releaseTimeTv"/>
 
 </RelativeLayout>

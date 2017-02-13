@@ -1,5 +1,8 @@
 package com.bolo4963gmail.mygankio.ConnectionClasses;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -21,6 +24,8 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,33 +185,27 @@ public class OkHttpConnection {
      * @param flag    从5个名称以TOPICS开头的String中选取
      * @param node_id 选取接收的topics的类别
      * @param offset  请求位置开始数，从0开始
-     * @return 返回TopicsGson类，网络连接失败时返回null
      */
-    public static TopicsGson getTopics(@Nullable String flag, int node_id, int offset) {
+    public static void getTopics(@Nullable String flag, int node_id, int offset) {
         if (flag == null) {
             flag = TOPICS_LAST_ACTIVED;
         }
 
         OkHttpClient client = new OkHttpClient();
-        try {
-            Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
-            Request request = new Request.Builder().url(
-                    BASE_URL + "/topics.json" + "?type=" + flag + "&node_id=" + node_id + "&offset="
-                            + offset).headers(headers).get().build();
-            Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            return new Gson().fromJson(responseBody, TopicsGson.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        final Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
+        Request request = new Request.Builder().url(
+                BASE_URL + "/topics.json" + "?type=" + flag + "&node_id=" + node_id + "&offset="
+                        + offset).headers(headers).get().build();
+        ConnectionCallback<TopicsGson> callback =
+                new ConnectionCallback<>(offset, MainActivity.GET_TOPICS_FAILED,
+                                         MainActivity.GOT_TOPICS, TopicsGson[].class);
+        client.newCall(request).enqueue(callback);
     }
 
     /**
      * 获取topics
      *
      * @param flag 从5个名称以TOPICS开头的String中选取
-     * @return 返回TopicsGson类，网络连接失败时返回null
      */
     public static void getTopics(@Nullable String flag, int offset) {
         if (flag == null) {
@@ -220,12 +219,35 @@ public class OkHttpConnection {
                 .headers(headers)
                 .get()
                 .build();
+        ConnectionCallback<TopicsGson> callback =
+                new ConnectionCallback<>(offset, MainActivity.GET_TOPICS_FAILED,
+                                         MainActivity.GOT_TOPICS, TopicsGson[].class);
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * 获取projects
+     *
+     * @param node_id 选取接收的projects的类别
+     * @param offset  请求位置开始数，从0开始
+     */
+    public static void getProjects(int node_id, int offset) {
+        OkHttpClient client = new OkHttpClient();
+        Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
+        Request request = new Request.Builder().url(
+                BASE_URL + "/projects.json" + "?node_id=" + node_id + "&offset=" + offset)
+                .headers(headers)
+                .get()
+                .build();
         Callback callback = new Callback() {
 
             @Override
             public void onFailure(Request request, IOException e) {
-                e.printStackTrace();
-
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GET_PROJECTS_FAILED;
+                    handler.sendMessage(message);
+                }
             }
 
             @Override
@@ -233,9 +255,11 @@ public class OkHttpConnection {
                 String responseBody = response.body().string();
                 if (handler != null) {
                     Message message = Message.obtain(handler);
-                    message.what = MainActivity.GOT_TOPICS;
-                    // TODO: 2017/2/9 更改为List 全部替换
-                    message.obj = new Gson().fromJson(responseBody, TopicsGson.class);
+                    message.what = MainActivity.GOT_PROJECTS;
+                    message.obj =
+                            new Gson().fromJson(responseBody, new TypeToken<List<ProjectsGson>>() {
+
+                            }.getType());
                     handler.sendMessage(message);
                 }
             }
@@ -246,51 +270,42 @@ public class OkHttpConnection {
     /**
      * 获取projects
      *
-     * @param node_id 选取接收的projects的类别
-     * @param offset  请求位置开始数，从0开始
-     * @return 返回ProjectsGson类，网络连接失败时返回null
-     */
-    public static ProjectsGson getProjects(int node_id, int offset) {
-        OkHttpClient client = new OkHttpClient();
-        try {
-            Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
-            Request request = new Request.Builder().url(
-                    BASE_URL + "/projects.json" + "?node_id=" + node_id + "&offset=" + offset)
-                    .headers(headers)
-                    .get()
-                    .build();
-            Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            return new Gson().fromJson(responseBody, ProjectsGson.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 获取projects
-     *
      * @param offset 请求位置开始数，从0开始
-     * @return 返回ProjectsGson类，网络连接失败时返回null
      */
-    public static List<ProjectsGson> getProjects(int offset) {
+    public static void getProjects(int offset) {
         OkHttpClient client = new OkHttpClient();
-        try {
-            Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
-            Request request =
-                    new Request.Builder().url(BASE_URL + "/projects.json" + "?offset=" + offset)
-                            .headers(headers)
-                            .get()
-                            .build();
-            Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            return new Gson().fromJson(responseBody, new TypeToken<List<ProjectsGson>>() {}
-                    .getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
+        Request request =
+                new Request.Builder().url(BASE_URL + "/projects.json" + "?offset=" + offset)
+                        .headers(headers)
+                        .get()
+                        .build();
+        Callback callback = new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GET_PROJECTS_FAILED;
+                    handler.sendMessage(message);
+                }
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GOT_PROJECTS;
+                    message.obj =
+                            new Gson().fromJson(responseBody, new TypeToken<List<ProjectsGson>>() {
+
+                            }.getType());
+                    handler.sendMessage(message);
+                }
+            }
+        };
+        client.newCall(request).enqueue(callback);
     }
 
     /**
@@ -298,44 +313,94 @@ public class OkHttpConnection {
      *
      * @param node_id 选取接收的news的类别
      * @param offset  请求位置开始数，从0开始
-     * @return 返回ProjectsGson类，网络连接失败时返回null
      */
-    public static NewsGson getNews(int node_id, int offset) {
+    public static void getNews(int node_id, int offset) {
         OkHttpClient client = new OkHttpClient();
-        try {
-            Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
-            Request request = new Request.Builder().url(
-                    BASE_URL + "/news.json" + "?node_id=" + node_id + "&offset=" + offset)
-                    .headers(headers)
-                    .get()
-                    .build();
-            Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            return new Gson().fromJson(responseBody, NewsGson.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
+        Request request = new Request.Builder().url(
+                BASE_URL + "/news.json" + "?node_id=" + node_id + "&offset=" + offset)
+                .headers(headers)
+                .get()
+                .build();
+        Callback callback = new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GET_NEWS_FAILED;
+                    handler.sendMessage(message);
+                }
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GOT_NEWS;
+                    message.obj =
+                            new Gson().fromJson(responseBody, new TypeToken<List<NewsGson>>() {
+
+                            }.getType());
+                    handler.sendMessage(message);
+                }
+            }
+        };
+        client.newCall(request).enqueue(callback);
     }
 
     /**
      * 获取news
      *
      * @param offset 请求位置开始数，从0开始
-     * @return 返回ProjectsGson类，网络连接失败时返回null
      */
-    public static NewsGson getNews(int offset) {
+    public static void getNews(int offset) {
         OkHttpClient client = new OkHttpClient();
+        Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
+        Request request = new Request.Builder().url(BASE_URL + "/news.json" + "?offset=" + offset)
+                .headers(headers)
+                .get()
+                .build();
+        Callback callback = new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GET_NEWS_FAILED;
+                    handler.sendMessage(message);
+                }
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (handler != null) {
+                    Message message = Message.obtain(handler);
+                    message.what = MainActivity.GOT_NEWS;
+                    message.obj =
+                            new Gson().fromJson(responseBody, new TypeToken<List<NewsGson>>() {
+
+                            }.getType());
+                    handler.sendMessage(message);
+                }
+            }
+        };
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * 同步方法
+     * @param url 取得image的地址
+     */
+    public static Bitmap getHeadImage(String url) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).get().build();
         try {
-            Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
-            Request request =
-                    new Request.Builder().url(BASE_URL + "/news.json" + "?offset=" + offset)
-                            .headers(headers)
-                            .get()
-                            .build();
             Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            return new Gson().fromJson(responseBody, NewsGson.class);
+            InputStream in = response.body().byteStream();
+            return BitmapFactory.decodeStream(in);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -352,5 +417,44 @@ public class OkHttpConnection {
 
     public static void setHandler(Handler handler) {
         OkHttpConnection.handler = handler;
+    }
+
+    private static class ConnectionCallback<T> implements Callback {
+
+        private int offset;
+        private int failure;
+        private int success;
+        private Class<T[]> clazz;
+
+        public ConnectionCallback(int offset, int failure, int success, Class<T[]> clazz) {
+            this.offset = offset;
+            this.failure = failure;
+            this.success = success;
+            this.clazz = clazz;
+        }
+
+        @Override
+        public void onFailure(Request request, IOException e) {
+            if (handler != null) {
+                Message message = Message.obtain(handler);
+                message.what = failure;
+                handler.sendMessage(message);
+            }
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            String responseBody = response.body().string();
+            if (handler != null) {
+                Message message = Message.obtain(handler);
+                message.what = success;
+                Bundle bundle = new Bundle();
+                bundle.putInt("offset", offset);
+                message.setData(bundle);
+                T[] arr = new Gson().fromJson(responseBody, clazz);
+                message.obj = Arrays.asList(arr);
+                handler.sendMessage(message);
+            }
+        }
     }
 }

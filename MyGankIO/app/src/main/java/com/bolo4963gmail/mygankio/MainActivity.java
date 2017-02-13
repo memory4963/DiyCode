@@ -24,9 +24,11 @@ import android.widget.Toast;
 
 import com.bolo4963gmail.mygankio.ConnectionClasses.OkHttpConnection;
 import com.bolo4963gmail.mygankio.GsonClasses.TopicsGson;
+import com.bolo4963gmail.mygankio.RecyclerViewClasses.OnItemTouchListener;
 import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewAdapter;
+import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewController;
+import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewData;
 import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewDecoration;
-import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewHolder;
 import com.bolo4963gmail.mygankio.SharedPreferencesClasses.PreferencesController;
 
 import java.util.ArrayList;
@@ -43,9 +45,9 @@ public class MainActivity extends BaseActivity
     private long time = 0;
 
     // TODO: 2017/1/27 编辑list
-    List<RecyclerViewHolder> communityList = new ArrayList<>();
-    List<RecyclerViewHolder> projectList;
-    List<RecyclerViewHolder> newsList;
+    List<RecyclerViewData> topicsList = new ArrayList<>();
+    List<RecyclerViewData> projectList;
+    List<RecyclerViewData> newsList;
     private RecyclerViewAdapter adapter;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -59,16 +61,30 @@ public class MainActivity extends BaseActivity
     TextView userName;
 
     public static final int GOT_TOPICS = 12343;
+    public static final int GET_TOPICS_FAILED = 12352;
+    public static final int GOT_PROJECTS = 56352;
+    public static final int GET_PROJECTS_FAILED = 12657;
+    public static final int GOT_NEWS = 54652;
+    public static final int GET_NEWS_FAILED = 16657;
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case GOT_TOPICS:
-                    TopicsGson topicsGson = (TopicsGson) msg.obj;
+                    List<TopicsGson> topicsGsonList = (List<TopicsGson>) msg.obj;
+                    RecyclerViewController.setTopicsList(topicsList, topicsGsonList,
+                                                         msg.getData().getInt("offset"));
+                    RecyclerViewData recyclerViewData = topicsList.get(0);
+                    Log.d(TAG, "handleMessage: ViewData:" + recyclerViewData.titleTvStr + " "
+                            + recyclerViewData.authorNameTvStr);
+                    adapter.notifyDataSetChanged();
+                    break;
+                case GET_TOPICS_FAILED:
 
                     break;
+
                 default:
                     break;
             }
@@ -132,17 +148,18 @@ public class MainActivity extends BaseActivity
         OkHttpConnection.getTopics(null, 0);
 
         //recyclerView
-        adapter = new RecyclerViewAdapter(this, communityList);
+        adapter = new RecyclerViewAdapter(this, topicsList);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         //分割线
         recyclerView.addItemDecoration(
-                                       new RecyclerViewDecoration(this,
-                                                                  LinearLayoutManager.VERTICAL, 12,
-                                                                  getResources().getColor(
-                                                                          R.color.white)));
+                new RecyclerViewDecoration(this, LinearLayoutManager.VERTICAL, 12,
+                                           getResources().getColor(R.color.white)));
+        recyclerView.addOnItemTouchListener(new OnItemTouchListener() {
+
+        });
 
         headImage.setOnClickListener(new View.OnClickListener() {
 
