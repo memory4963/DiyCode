@@ -1,25 +1,36 @@
 package com.bolo4963gmail.mygankio;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.TextView;
+
+import com.bolo4963gmail.mygankio.ConnectionClasses.OkHttpConnection;
+import com.bolo4963gmail.mygankio.GsonClasses.TopicBodyGson;
+import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewData;
+import com.zzhoujay.richtext.RichText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ContentActivity extends BaseActivity {
+
+    private static final String TAG = "ContentActivity";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -29,11 +40,57 @@ public class ContentActivity extends BaseActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.collapsingToolbarLayout) CollapsingToolbarLayout collapsingToolbarLayout;
+    private Dialog dialog;
+    private AlertDialog.Builder builder;
+
+    @BindView(R.id.contentToolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.contentTv) TextView contentTv;
+    @BindView(R.id.contentSwipe) SwipeRefreshLayout contentSwipe;
+    @BindView(R.id.contentWebView) WebView webView;
+
+    public static final int GOT_TOPIC = 39596;
+    public static final int GET_TOPIC_FAILED = 29596;
+    public static final int GOT_NEWS = 15463;
+    public static final int GET_NEWS_FAILED = 53399;
+    private Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case GOT_TOPIC:
+                    TopicBodyGson bodyGson = (TopicBodyGson) msg.obj;
+                    RichText.from(bodyGson.getBody_html()).into(contentTv);
+                    contentSwipe.setRefreshing(false);
+                    break;
+                case GET_TOPIC_FAILED:
+                case GET_NEWS_FAILED:
+                    dialog = builder.setMessage("获取文章失败！请检查您的网络连接").show();
+                    contentSwipe.setRefreshing(false);
+                    break;
+                case GOT_NEWS:
+                    String body = (String) msg.obj;
+                    RichText.from(body).into(contentTv);
+                    contentSwipe.setRefreshing(false);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_BACK && webView.getVisibility() == View.VISIBLE) {
+            webView.setVisibility(View.GONE);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +98,57 @@ public class ContentActivity extends BaseActivity {
         setContentView(R.layout.activity_content);
         ButterKnife.bind(this);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         // Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        OkHttpConnection.setContentHandler(handler);
+
+        //设置AlertDialog
+        builder = new AlertDialog.Builder(this).setTitle("连接失败！")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+        //获取数据
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
+        int type = intent.getIntExtra("type", -1);
+        if (type == RecyclerViewData.TYPE_TOPIC) {
+            int topicId = intent.getIntExtra("topicId", -1);
+            if (topicId == -1) {
+                throw new RuntimeException("无topicId");
+            }
+            contentSwipe.setRefreshing(true);
+            OkHttpConnection.getPieceOfTopic(topicId);
+        } else if (type == RecyclerViewData.TYPE_NEWS) {
+            String newsUrl = intent.getStringExtra("newsUrl");
+            if (TextUtils.isEmpty(newsUrl)) {
+                throw new RuntimeException("无newsUrl");
+            }
+            contentSwipe.setRefreshing(true);
+            OkHttpConnection.getPieceOfNews(newsUrl);
+        } else if (type == RecyclerViewData.TYPE_PROJECT) {
+            String readme = intent.getStringExtra("readme");
+            RichText.fromMarkdown(readme).into(contentTv);
+        }
 
         // CollapsingToolbarLayout
-        collapsingToolbarLayout.setTitle("干货集中营");
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        toolbar.setTitle(title);
+        setTitle(title);
 
         fab.setOnClickListener(new View.OnClickListener() {
 
@@ -89,75 +184,4 @@ public class ContentActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
-        }
-    }
 }

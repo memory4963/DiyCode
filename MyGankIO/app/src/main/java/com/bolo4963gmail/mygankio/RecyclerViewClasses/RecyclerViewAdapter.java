@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by 10733 on 2016/12/14.
@@ -64,10 +61,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        // TODO: 2017/1/28 设置childView的控件
+        holder.type = mData.get(position).type;
+        if (mData.get(position).type == RecyclerViewData.TYPE_PROJECT) {
+            holder.replyTv.setText("Stars：");
+        }
         holder.titleTv.setText(mData.get(position).titleTvStr);
+        holder.titleId = mData.get(position).titleId;
         holder.sortTv.setText(mData.get(position).sortTvStr);
+        holder.sortId = mData.get(position).sortId;
         holder.authorNameTv.setText(mData.get(position).authorNameTvStr);
+        holder.authorId = mData.get(position).authorId;
         if (!mData.get(position).ImageViewUrl.equals("")) {
             imageViewMap.put(position, holder.authorHeadIv);
             ThreadPoolProvider.getThreadPool()
@@ -75,11 +78,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         }
         holder.replyCountTv.setText(mData.get(position).replyCountTvStr.toString());
         holder.releaseTimeTv.setText(mData.get(position).releaseTimeTvStr);
-        if (holder.titleTv.getLineCount() == 3) {
-            // TODO: 2017/2/12 超过3行更改字号  未找到方法
-            holder.titleTv.setTextSize(12);
-            Log.d(TAG, "onBindViewHolder: 改变字号");
-        }
+        holder.projectReadMe = mData.get(position).projectReadMe;
+        holder.newsUrl = mData.get(position).newsUrl;
+        holder.projectTitle = mData.get(position).projectTitle;
     }
 
     @Override
@@ -99,7 +100,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
         @Override
         public void run() {
-            Log.d(TAG, "run: url:" + url);
             Bitmap headImage = OkHttpConnection.getHeadImage(url);
             Message message = Message.obtain();
             message.what = SET_HEAD_IMAGE;

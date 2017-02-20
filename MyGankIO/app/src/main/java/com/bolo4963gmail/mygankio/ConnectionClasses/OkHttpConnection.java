@@ -7,14 +7,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
+import com.bolo4963gmail.mygankio.ContentActivity;
 import com.bolo4963gmail.mygankio.GsonClasses.LoginGson;
 import com.bolo4963gmail.mygankio.GsonClasses.NewsGson;
 import com.bolo4963gmail.mygankio.GsonClasses.ProjectsGson;
+import com.bolo4963gmail.mygankio.GsonClasses.TopicBodyGson;
 import com.bolo4963gmail.mygankio.GsonClasses.TopicsGson;
 import com.bolo4963gmail.mygankio.MainActivity;
 import com.bolo4963gmail.mygankio.SharedPreferencesClasses.PreferencesController;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
@@ -27,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,7 +36,9 @@ import java.util.Map;
 
 public class OkHttpConnection {
 
-    private static Handler handler;
+    private static Handler mainHandler;
+
+    private static Handler contentHandler;
 
     private static final String TAG = "OkHttpConnection";
 
@@ -49,14 +51,6 @@ public class OkHttpConnection {
      * URL 基本路径
      */
     private static final String BASE_URL = "https://diycode.cc/api/v3";//any
-
-    /**
-     * 记录用户 Device 信息，用于 Push 通知。
-     * 请在每次用户打开 App 的时候调用此 API 以便更新 Token 的 last_actived_at 让服务端知道这个设备还活着。
-     * Push 将会忽略那些超过两周的未更新的设备。
-     * Method post
-     */
-    private static final String DEVICES = "/devices.json";
 
     /**
      * 选取Topics
@@ -168,7 +162,7 @@ public class OkHttpConnection {
         OkHttpClient client = new OkHttpClient();
         try {
             Request request = new Request.Builder().url(
-                    BASE_URL + DEVICES + "?platform=android&token=" + token)
+                    BASE_URL + "/devices.json" + "?platform=android&token=" + token)
                     .post(null)
                     .header(AUTHORIZATION, "Bearer " + token)
                     .header("Host", "diycode.cc")
@@ -196,9 +190,9 @@ public class OkHttpConnection {
         Request request = new Request.Builder().url(
                 BASE_URL + "/topics.json" + "?type=" + flag + "&node_id=" + node_id + "&offset="
                         + offset).headers(headers).get().build();
-        ConnectionCallback<TopicsGson> callback =
-                new ConnectionCallback<>(offset, MainActivity.GET_TOPICS_FAILED,
-                                         MainActivity.GOT_TOPICS, TopicsGson[].class);
+        ListCallBack<TopicsGson> callback =
+                new ListCallBack<>(offset, MainActivity.GET_TOPICS_FAILED, MainActivity.GOT_TOPICS,
+                                   TopicsGson[].class);
         client.newCall(request).enqueue(callback);
     }
 
@@ -219,9 +213,9 @@ public class OkHttpConnection {
                 .headers(headers)
                 .get()
                 .build();
-        ConnectionCallback<TopicsGson> callback =
-                new ConnectionCallback<>(offset, MainActivity.GET_TOPICS_FAILED,
-                                         MainActivity.GOT_TOPICS, TopicsGson[].class);
+        ListCallBack<TopicsGson> callback =
+                new ListCallBack<>(offset, MainActivity.GET_TOPICS_FAILED, MainActivity.GOT_TOPICS,
+                                   TopicsGson[].class);
         client.newCall(request).enqueue(callback);
     }
 
@@ -239,31 +233,9 @@ public class OkHttpConnection {
                 .headers(headers)
                 .get()
                 .build();
-        Callback callback = new Callback() {
-
-            @Override
-            public void onFailure(Request request, IOException e) {
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GET_PROJECTS_FAILED;
-                    handler.sendMessage(message);
-                }
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String responseBody = response.body().string();
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GOT_PROJECTS;
-                    message.obj =
-                            new Gson().fromJson(responseBody, new TypeToken<List<ProjectsGson>>() {
-
-                            }.getType());
-                    handler.sendMessage(message);
-                }
-            }
-        };
+        ListCallBack<ProjectsGson> callback =
+                new ListCallBack<>(offset, MainActivity.GET_PROJECTS_FAILED,
+                                   MainActivity.GOT_PROJECTS, ProjectsGson[].class);
         client.newCall(request).enqueue(callback);
     }
 
@@ -280,31 +252,9 @@ public class OkHttpConnection {
                         .headers(headers)
                         .get()
                         .build();
-        Callback callback = new Callback() {
-
-            @Override
-            public void onFailure(Request request, IOException e) {
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GET_PROJECTS_FAILED;
-                    handler.sendMessage(message);
-                }
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String responseBody = response.body().string();
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GOT_PROJECTS;
-                    message.obj =
-                            new Gson().fromJson(responseBody, new TypeToken<List<ProjectsGson>>() {
-
-                            }.getType());
-                    handler.sendMessage(message);
-                }
-            }
-        };
+        ListCallBack<ProjectsGson> callback =
+                new ListCallBack<>(offset, MainActivity.GET_PROJECTS_FAILED,
+                                   MainActivity.GOT_PROJECTS, ProjectsGson[].class);
         client.newCall(request).enqueue(callback);
     }
 
@@ -322,31 +272,9 @@ public class OkHttpConnection {
                 .headers(headers)
                 .get()
                 .build();
-        Callback callback = new Callback() {
-
-            @Override
-            public void onFailure(Request request, IOException e) {
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GET_NEWS_FAILED;
-                    handler.sendMessage(message);
-                }
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String responseBody = response.body().string();
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GOT_NEWS;
-                    message.obj =
-                            new Gson().fromJson(responseBody, new TypeToken<List<NewsGson>>() {
-
-                            }.getType());
-                    handler.sendMessage(message);
-                }
-            }
-        };
+        ListCallBack<NewsGson> callback =
+                new ListCallBack<>(offset, MainActivity.GET_NEWS_FAILED, MainActivity.GOT_NEWS,
+                                   NewsGson[].class);
         client.newCall(request).enqueue(callback);
     }
 
@@ -362,36 +290,15 @@ public class OkHttpConnection {
                 .headers(headers)
                 .get()
                 .build();
-        Callback callback = new Callback() {
-
-            @Override
-            public void onFailure(Request request, IOException e) {
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GET_NEWS_FAILED;
-                    handler.sendMessage(message);
-                }
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String responseBody = response.body().string();
-                if (handler != null) {
-                    Message message = Message.obtain(handler);
-                    message.what = MainActivity.GOT_NEWS;
-                    message.obj =
-                            new Gson().fromJson(responseBody, new TypeToken<List<NewsGson>>() {
-
-                            }.getType());
-                    handler.sendMessage(message);
-                }
-            }
-        };
+        ListCallBack<NewsGson> callback =
+                new ListCallBack<>(offset, MainActivity.GET_NEWS_FAILED, MainActivity.GOT_NEWS,
+                                   NewsGson[].class);
         client.newCall(request).enqueue(callback);
     }
 
     /**
      * 同步方法
+     *
      * @param url 取得image的地址
      */
     public static Bitmap getHeadImage(String url) {
@@ -415,18 +322,22 @@ public class OkHttpConnection {
         OkHttpConnection.token = token;
     }
 
-    public static void setHandler(Handler handler) {
-        OkHttpConnection.handler = handler;
+    public static void setMainHandler(Handler mainHandler) {
+        OkHttpConnection.mainHandler = mainHandler;
     }
 
-    private static class ConnectionCallback<T> implements Callback {
+    public static void setContentHandler(Handler contentHandler) {
+        OkHttpConnection.contentHandler = contentHandler;
+    }
+
+    private static class ListCallBack<T> implements Callback {
 
         private int offset;
         private int failure;
         private int success;
         private Class<T[]> clazz;
 
-        public ConnectionCallback(int offset, int failure, int success, Class<T[]> clazz) {
+        public ListCallBack(int offset, int failure, int success, Class<T[]> clazz) {
             this.offset = offset;
             this.failure = failure;
             this.success = success;
@@ -435,26 +346,81 @@ public class OkHttpConnection {
 
         @Override
         public void onFailure(Request request, IOException e) {
-            if (handler != null) {
-                Message message = Message.obtain(handler);
+            if (mainHandler != null) {
+                Message message = Message.obtain(mainHandler);
                 message.what = failure;
-                handler.sendMessage(message);
+                mainHandler.sendMessage(message);
             }
         }
 
         @Override
         public void onResponse(Response response) throws IOException {
             String responseBody = response.body().string();
-            if (handler != null) {
-                Message message = Message.obtain(handler);
+            if (mainHandler != null) {
+                Message message = Message.obtain(mainHandler);
                 message.what = success;
                 Bundle bundle = new Bundle();
                 bundle.putInt("offset", offset);
                 message.setData(bundle);
                 T[] arr = new Gson().fromJson(responseBody, clazz);
                 message.obj = Arrays.asList(arr);
-                handler.sendMessage(message);
+                mainHandler.sendMessage(message);
             }
         }
     }
+
+    /**
+     * 获取对应id的topic 调用前先设置contentHandler
+     *
+     * @param id 对应的topic的id
+     */
+    public static void getPieceOfTopic(int id) {
+        OkHttpClient client = new OkHttpClient();
+        Request request =
+                new Request.Builder().url(BASE_URL + "/topics/" + id + ".json").get().build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Message message = Message.obtain();
+                message.what = ContentActivity.GET_TOPIC_FAILED;
+                contentHandler.sendMessage(message);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String body = response.body().string();
+                TopicBodyGson gson = new Gson().fromJson(body, TopicBodyGson.class);
+                Message message = Message.obtain();
+                message.obj = gson;
+                message.what = ContentActivity.GOT_TOPIC;
+                contentHandler.sendMessage(message);
+            }
+        });
+    }
+
+    public static void getPieceOfNews(final String newsUrl) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(newsUrl).get().build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Message message = Message.obtain();
+                message.what = ContentActivity.GET_NEWS_FAILED;
+                contentHandler.sendMessage(message);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String body = response.body().string();
+                Message message = Message.obtain();
+                message.what = ContentActivity.GOT_NEWS;
+                message.obj = body;
+                // TODO: 2017/2/19 修复有时崩溃的bug，由RichText引起
+                contentHandler.sendMessage(message);
+            }
+        });
+    }
+
 }

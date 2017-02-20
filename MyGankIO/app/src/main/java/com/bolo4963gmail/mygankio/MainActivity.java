@@ -1,5 +1,7 @@
 package com.bolo4963gmail.mygankio;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,18 +13,22 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bolo4963gmail.mygankio.ConnectionClasses.OkHttpConnection;
+import com.bolo4963gmail.mygankio.GsonClasses.NewsGson;
+import com.bolo4963gmail.mygankio.GsonClasses.ProjectsGson;
 import com.bolo4963gmail.mygankio.GsonClasses.TopicsGson;
 import com.bolo4963gmail.mygankio.RecyclerViewClasses.OnItemTouchListener;
 import com.bolo4963gmail.mygankio.RecyclerViewClasses.RecyclerViewAdapter;
@@ -44,21 +50,28 @@ public class MainActivity extends BaseActivity
 
     private long time = 0;
 
-    // TODO: 2017/1/27 编辑list
-    List<RecyclerViewData> topicsList = new ArrayList<>();
-    List<RecyclerViewData> projectList;
-    List<RecyclerViewData> newsList;
-    private RecyclerViewAdapter adapter;
+    private Dialog dialog;
+    private AlertDialog.Builder builder;
+
+    private List<RecyclerViewData> topicsList = new ArrayList<>();
+    private List<RecyclerViewData> projectList = new ArrayList<>();
+    private List<RecyclerViewData> newsList = new ArrayList<>();
+    private RecyclerViewAdapter topicsAdapter;
+    private RecyclerViewAdapter projectAdapter;
+    private RecyclerViewAdapter newsAdapter;
+    private int offset = 0;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawerLayout) DrawerLayout drawer;
     @BindView(R.id.navView) NavigationView navigationView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
 
     ImageView headImage;
     TextView userName;
+
+    private int navigationSelectedItem;
 
     public static final int GOT_TOPICS = 12343;
     public static final int GET_TOPICS_FAILED = 12352;
@@ -76,15 +89,58 @@ public class MainActivity extends BaseActivity
                     List<TopicsGson> topicsGsonList = (List<TopicsGson>) msg.obj;
                     RecyclerViewController.setTopicsList(topicsList, topicsGsonList,
                                                          msg.getData().getInt("offset"));
-                    RecyclerViewData recyclerViewData = topicsList.get(0);
-                    Log.d(TAG, "handleMessage: ViewData:" + recyclerViewData.titleTvStr + " "
-                            + recyclerViewData.authorNameTvStr);
-                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(topicsAdapter);
+                    topicsAdapter.notifyDataSetChanged();
+                    //设置上拉加载后的位置
+                    if (offset != 0) {
+                        recyclerView.scrollToPosition(offset);
+                        int scrollHeight = recyclerView.getHeight();
+                        recyclerView.scrollBy(0, -scrollHeight);
+                    }
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                     break;
                 case GET_TOPICS_FAILED:
-
+                    dialog = builder.setMessage("获取社区列表失败！请检查您的网络连接").show();
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                     break;
+                case GOT_NEWS:
+                    List<NewsGson> newsGsonList = (List<NewsGson>) msg.obj;
+                    RecyclerViewController.setNewsList(newsList, newsGsonList,
+                                                       msg.getData().getInt("offset"));
+                    recyclerView.setAdapter(newsAdapter);
+                    newsAdapter.notifyDataSetChanged();
 
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    break;
+                case GET_NEWS_FAILED:
+                    dialog = builder.setMessage("获取NEWS列表失败！请检查您的网络连接").show();
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    break;
+                case GOT_PROJECTS:
+                    List<ProjectsGson> projectsGsonList = (List<ProjectsGson>) msg.obj;
+                    RecyclerViewController.setProjectList(projectList, projectsGsonList,
+                                                          msg.getData().getInt("offset"));
+                    recyclerView.setAdapter(projectAdapter);
+                    projectAdapter.notifyDataSetChanged();
+
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    break;
+                case GET_PROJECTS_FAILED:
+                    dialog = builder.setMessage("获取项目列表失败！请检查您的网络连接").show();
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -98,8 +154,21 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
+        //设置AlertDialog
+        builder = new AlertDialog.Builder(this).setTitle("连接失败！")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+
+                    }
+                });
+
         //设置OKHttpConnection回调接口
-        OkHttpConnection.setHandler(handler);
+        OkHttpConnection.setMainHandler(handler);
 
         toolbar.setTitle("DiyCode");
 
@@ -138,18 +207,51 @@ public class MainActivity extends BaseActivity
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+        navigationSelectedItem = navigationView.getMenu().getItem(0).getItemId();
 
         View hView = navigationView.getHeaderView(0);
         headImage = (ImageView) hView.findViewById(R.id.user_head_image);
         userName = (TextView) hView.findViewById(R.id.user_name);
 
-        //获取topics
-        // TODO: 2017/2/9 改进 降低耦合性
-        OkHttpConnection.getTopics(null, 0);
+        //set swipeRefreshLayout
+        swipeRefreshLayout.setProgressViewOffset(false, -180, 48);
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.DEFAULT);
+        swipeRefreshLayout.setEnabled(true);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                Log.d(TAG, "onRefresh: navigationSelectedItem:" + navigationSelectedItem);
+                switch (navigationSelectedItem) {
+                    case R.id.nav_community:
+                        Log.d(TAG, "onRefresh: refreshing");
+                        topicsList.clear();
+                        OkHttpConnection.getTopics(null, 0);
+                        offset = 0;
+                        break;
+                    case R.id.nav_news:
+                        newsList.clear();
+                        OkHttpConnection.getNews(0);
+                        offset = 0;
+                        break;
+                    case R.id.nav_project:
+                        projectList.clear();
+                        OkHttpConnection.getProjects(0);
+                        offset = 0;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        swipeRefreshLayout.setRefreshing(true);
 
         //recyclerView
-        adapter = new RecyclerViewAdapter(this, topicsList);
-        recyclerView.setAdapter(adapter);
+        topicsAdapter = new RecyclerViewAdapter(this, topicsList);
+        projectAdapter = new RecyclerViewAdapter(this, projectList);
+        newsAdapter = new RecyclerViewAdapter(this, newsList);
+
+        recyclerView.setAdapter(topicsAdapter);
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -160,6 +262,57 @@ public class MainActivity extends BaseActivity
         recyclerView.addOnItemTouchListener(new OnItemTouchListener() {
 
         });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                View lastChildView = recyclerView.getLayoutManager()
+                        .getChildAt(recyclerView.getLayoutManager().getChildCount() - 1);
+                int childBottom = 0;
+                if (recyclerView.getLayoutManager().getChildCount() > 20) {
+
+                    View seventhChildView = recyclerView.getLayoutManager().getChildAt(19);
+                    childBottom = seventhChildView.getBottom();
+                }
+                //分割线12px高
+                int lastChildBottom = lastChildView.getBottom() + 12;
+                int recyclerBottom = recyclerView.getBottom() - recyclerView.getPaddingBottom();
+                int lastPosition = recyclerView.getLayoutManager().getPosition(lastChildView);
+                Log.d(TAG,
+                      "onScrolled: " + lastChildBottom + " " + recyclerBottom + " " + childBottom);
+
+                //上拉加载
+                if (lastChildBottom == recyclerBottom
+                        && lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+                    switch (navigationSelectedItem) {
+                        case R.id.nav_community:
+                            offset += 20;
+                            OkHttpConnection.getTopics(null, offset);
+                            break;
+                        case R.id.nav_news:
+                            offset += 20;
+                            OkHttpConnection.getNews(offset);
+                            break;
+                        case R.id.nav_project:
+                            offset += 20;
+                            OkHttpConnection.getProjects(offset);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return swipeRefreshLayout.isRefreshing();
+            }
+        });
+
+        //获取Topics
+        OkHttpConnection.getTopics(null, 0);
 
         headImage.setOnClickListener(new View.OnClickListener() {
 
@@ -184,10 +337,8 @@ public class MainActivity extends BaseActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if (recyclerView.canScrollVertically(-1)) {
             recyclerView.smoothScrollToPosition(0);
-            Log.d(TAG, "onBackPressed: 没有在第一个");
         } else if (time == 0 || (System.currentTimeMillis() - time > 2700)) {
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "onBackPressed: 第一次点击");
             time = System.currentTimeMillis();
         } else {
             Log.d(TAG, "onBackPressed: 退出");
@@ -225,14 +376,22 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_community) {
-            // TODO: 2017/1/28 编辑菜单
-            Log.d(TAG, "onNavigationItemSelected: community chosen");
-        } else if (id == R.id.nav_project) {
-            Log.d(TAG, "onNavigationItemSelected: project chosen");
-        } else if (id == R.id.nav_news) {
-            Log.d(TAG, "onNavigationItemSelected: news chosen");
+            navigationSelectedItem = id;
+            swipeRefreshLayout.setRefreshing(true);
+            offset = 0;
+            OkHttpConnection.getTopics(null, 0);
         } else if (id == R.id.nav_setting) {
-
+            // TODO: 2017/2/13 设置Activity
+        } else if (id == R.id.nav_project) {
+            navigationSelectedItem = id;
+            swipeRefreshLayout.setRefreshing(true);
+            offset = 0;
+            OkHttpConnection.getProjects(0);
+        } else if (id == R.id.nav_news) {
+            navigationSelectedItem = id;
+            swipeRefreshLayout.setRefreshing(true);
+            offset = 0;
+            OkHttpConnection.getNews(0);
         }
 
         drawer.closeDrawer(GravityCompat.START);
