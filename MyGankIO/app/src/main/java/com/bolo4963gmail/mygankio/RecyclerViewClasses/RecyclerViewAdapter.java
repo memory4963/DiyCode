@@ -90,7 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     private class HeadImageRunnable implements java.lang.Runnable {
 
-        int num;
+        private int num;
         private String url;
 
         public HeadImageRunnable(int num, String url) {

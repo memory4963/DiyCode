@@ -7,13 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
-import com.bolo4963gmail.mygankio.ContentActivity;
+import com.bolo4963gmail.mygankio.AcitivityClasses.ContentActivity;
+import com.bolo4963gmail.mygankio.AcitivityClasses.MainActivity;
 import com.bolo4963gmail.mygankio.GsonClasses.LoginGson;
 import com.bolo4963gmail.mygankio.GsonClasses.NewsGson;
 import com.bolo4963gmail.mygankio.GsonClasses.ProjectsGson;
 import com.bolo4963gmail.mygankio.GsonClasses.TopicBodyGson;
 import com.bolo4963gmail.mygankio.GsonClasses.TopicsGson;
-import com.bolo4963gmail.mygankio.MainActivity;
+import com.bolo4963gmail.mygankio.GsonClasses.UserInfoGson;
 import com.bolo4963gmail.mygankio.SharedPreferencesClasses.PreferencesController;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
@@ -61,13 +62,14 @@ public class OkHttpConnection {
     public static final String TOPICS_POPULAR = "popular";
     public static final String TOPICS_EXCELLENT = "excellent";
 
+    private static OkHttpClient client = new OkHttpClient();
+
     /**
      * 登录
      *
      * @return nullable
      */
     public static Map<String, String> login(String account, String password) {
-        OkHttpClient client = new OkHttpClient();
         try {
             Headers headers =
                     new Headers.Builder().add("content-type", "application/x-www-form-urlencoded")
@@ -114,9 +116,8 @@ public class OkHttpConnection {
     public static Map<String, String> refreshToken() {
         if (refresh_token == null) {
             throw new RuntimeException(
-                    "refresh_token为空吗，先初始化。(refresh_token is null, please initial refresh_token first.)");
+                    "refresh_token为空，先初始化。(refresh_token is null, please initial refresh_token first.)");
         }
-        OkHttpClient client = new OkHttpClient();
         try {
             Headers headers =
                     new Headers.Builder().add("content-type", "application/x-www-form-urlencoded")
@@ -155,11 +156,48 @@ public class OkHttpConnection {
     }
 
     /**
+     * 获取当前登录用户信息
+     */
+    public static void getUserInfo() {
+        if (token == null) {
+            throw new RuntimeException("先登录并初始化token和refresh_token再调用");
+        }
+        Headers headers = new Headers.Builder().add("Authorization", "Bearer " + token).build();
+        Request request = new Request.Builder().url(BASE_URL + "/users/me.json")
+                .get()
+                .headers(headers)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Message message = Message.obtain();
+                message.what = MainActivity.GET_USER_INFO_FAILED;
+                mainHandler.sendMessage(message);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                UserInfoGson userInfo =
+                        new Gson().fromJson(response.body().string(), UserInfoGson.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("userId", userInfo.getId());
+                bundle.putString("userLogin", userInfo.getLogin());
+                bundle.putString("userEmail", userInfo.getEmail());
+                getHeadImageAsy(userInfo.getAvatar_url());
+                Message message = Message.obtain();
+                message.what = MainActivity.GOT_USER_INFO;
+                message.setData(bundle);
+                mainHandler.sendMessage(message);
+            }
+        });
+    }
+
+    /**
      * 初始化程序，通知服务器 “我还活着”
      * "未登录不要调用"
      */
     public static void initializeApp() {
-        OkHttpClient client = new OkHttpClient();
         try {
             Request request = new Request.Builder().url(
                     BASE_URL + "/devices.json" + "?platform=android&token=" + token)
@@ -185,7 +223,6 @@ public class OkHttpConnection {
             flag = TOPICS_LAST_ACTIVED;
         }
 
-        OkHttpClient client = new OkHttpClient();
         final Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
         Request request = new Request.Builder().url(
                 BASE_URL + "/topics.json" + "?type=" + flag + "&node_id=" + node_id + "&offset="
@@ -206,7 +243,6 @@ public class OkHttpConnection {
             flag = TOPICS_LAST_ACTIVED;
         }
 
-        OkHttpClient client = new OkHttpClient();
         Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
         Request request = new Request.Builder().url(
                 BASE_URL + "/topics.json" + "?type=" + flag + "&offset=" + offset)
@@ -226,7 +262,6 @@ public class OkHttpConnection {
      * @param offset  请求位置开始数，从0开始
      */
     public static void getProjects(int node_id, int offset) {
-        OkHttpClient client = new OkHttpClient();
         Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
         Request request = new Request.Builder().url(
                 BASE_URL + "/projects.json" + "?node_id=" + node_id + "&offset=" + offset)
@@ -245,7 +280,6 @@ public class OkHttpConnection {
      * @param offset 请求位置开始数，从0开始
      */
     public static void getProjects(int offset) {
-        OkHttpClient client = new OkHttpClient();
         Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
         Request request =
                 new Request.Builder().url(BASE_URL + "/projects.json" + "?offset=" + offset)
@@ -265,7 +299,6 @@ public class OkHttpConnection {
      * @param offset  请求位置开始数，从0开始
      */
     public static void getNews(int node_id, int offset) {
-        OkHttpClient client = new OkHttpClient();
         Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
         Request request = new Request.Builder().url(
                 BASE_URL + "/news.json" + "?node_id=" + node_id + "&offset=" + offset)
@@ -284,7 +317,6 @@ public class OkHttpConnection {
      * @param offset 请求位置开始数，从0开始
      */
     public static void getNews(int offset) {
-        OkHttpClient client = new OkHttpClient();
         Headers headers = new Headers.Builder().add("Host", "diycode.cc").build();
         Request request = new Request.Builder().url(BASE_URL + "/news.json" + "?offset=" + offset)
                 .headers(headers)
@@ -302,7 +334,6 @@ public class OkHttpConnection {
      * @param url 取得image的地址
      */
     public static Bitmap getHeadImage(String url) {
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
         try {
             Response response = client.newCall(request).execute();
@@ -312,6 +343,26 @@ public class OkHttpConnection {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void getHeadImageAsy(String url) {
+        Request request = new Request.Builder().url(url).get().build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                InputStream in = response.body().byteStream();
+                Message message = Message.obtain();
+                message.obj = BitmapFactory.decodeStream(in);
+                message.what = MainActivity.GOT_USER_HEAD_IMAGE;
+                mainHandler.sendMessage(message);
+            }
+        });
     }
 
     public static void setRefresh_token(String refresh_token) {
@@ -375,7 +426,6 @@ public class OkHttpConnection {
      * @param id 对应的topic的id
      */
     public static void getPieceOfTopic(int id) {
-        OkHttpClient client = new OkHttpClient();
         Request request =
                 new Request.Builder().url(BASE_URL + "/topics/" + id + ".json").get().build();
         client.newCall(request).enqueue(new Callback() {
@@ -400,7 +450,6 @@ public class OkHttpConnection {
     }
 
     public static void getPieceOfNews(final String newsUrl) {
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(newsUrl).get().build();
         client.newCall(request).enqueue(new Callback() {
 

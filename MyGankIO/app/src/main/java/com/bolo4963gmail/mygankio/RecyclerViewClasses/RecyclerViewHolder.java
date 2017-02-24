@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bolo4963gmail.mygankio.ContentActivity;
+import com.bolo4963gmail.mygankio.AcitivityClasses.ContentActivity;
 import com.bolo4963gmail.mygankio.R;
 
 /**

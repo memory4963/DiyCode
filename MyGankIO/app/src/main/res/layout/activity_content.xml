@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bolo4963gmail.mygankio.ContentActivity">
+    tools:context="com.bolo4963gmail.mygankio.AcitivityClasses.ContentActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -47,17 +47,18 @@
 
             <TextView
                 android:id="@+id/contentTv"
-                android:textSize="20sp"
+                android:textSize="18sp"
+                android:lineSpacingExtra="2dp"
                 android:textColor="#000000"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:paddingEnd="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
                 />
 
         </android.support.v4.widget.NestedScrollView>
