@@ -39,6 +39,10 @@
 
         <activity android:name=".AcitivityClasses.UserActivity">
         </activity>
+        <activity
+            android:name=".AcitivityClasses.LoginActivity"
+            android:label="@string/title_activity_login">
+        </activity>
     </application>
 
 </manifest>

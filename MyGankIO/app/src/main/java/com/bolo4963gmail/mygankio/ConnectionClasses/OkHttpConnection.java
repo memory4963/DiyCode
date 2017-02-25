@@ -69,7 +69,7 @@ public class OkHttpConnection {
      *
      * @return nullable
      */
-    public static Map<String, String> login(String account, String password) {
+    public static boolean login(String account, String password) {
         try {
             Headers headers =
                     new Headers.Builder().add("content-type", "application/x-www-form-urlencoded")
@@ -98,13 +98,10 @@ public class OkHttpConnection {
             PreferencesController.setPreferences(PreferencesController.REFRESH_TOKEN,
                                                  refresh_token);
 
-            Map<String, String> map = new HashMap<>();
-            map.put(PreferencesController.TOKEN, token);
-            map.put(PreferencesController.REFRESH_TOKEN, refresh_token);
-            return map;
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 

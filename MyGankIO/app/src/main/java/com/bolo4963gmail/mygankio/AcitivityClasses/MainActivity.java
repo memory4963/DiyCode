@@ -71,12 +71,13 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
 
-    ImageView headImage;
-    TextView userName;
-    TextView userEmail;
+    private ImageView headImage;
+    private TextView userName;
+    private TextView userEmail;
+    private int userId;
 
-    String token;
-    String refreshToken;
+    private String token;
+    private String refreshToken;
 
     private int navigationSelectedItem;
 
@@ -107,6 +108,7 @@ public class MainActivity extends BaseActivity
                         int scrollHeight = recyclerView.getHeight();
                         recyclerView.scrollBy(0, -scrollHeight);
                     }
+
                     if (swipeRefreshLayout.isRefreshing()) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -125,6 +127,12 @@ public class MainActivity extends BaseActivity
                                                        msg.getData().getInt("offset"));
                     recyclerView.setAdapter(newsAdapter);
                     newsAdapter.notifyDataSetChanged();
+                    //设置上拉加载后的位置
+                    if (offset != 0) {
+                        recyclerView.scrollToPosition(offset);
+                        int scrollHeight = recyclerView.getHeight();
+                        recyclerView.scrollBy(0, -scrollHeight);
+                    }
 
                     if (swipeRefreshLayout.isRefreshing()) {
                         swipeRefreshLayout.setRefreshing(false);
@@ -144,6 +152,12 @@ public class MainActivity extends BaseActivity
                                                           msg.getData().getInt("offset"));
                     recyclerView.setAdapter(projectAdapter);
                     projectAdapter.notifyDataSetChanged();
+                    //设置上拉加载后的位置
+                    if (offset != 0) {
+                        recyclerView.scrollToPosition(offset);
+                        int scrollHeight = recyclerView.getHeight();
+                        recyclerView.scrollBy(0, -scrollHeight);
+                    }
 
                     if (swipeRefreshLayout.isRefreshing()) {
                         swipeRefreshLayout.setRefreshing(false);
@@ -159,8 +173,9 @@ public class MainActivity extends BaseActivity
                     break;
                 case GOT_USER_INFO:
                     Bundle bundle = msg.getData();
-                    userName.setText(bundle.getInt("userId"));
-                    userEmail.setText(bundle.getInt("userEmail"));
+                    userId = bundle.getInt("userId");
+                    userName.setText(bundle.getString("userLogin"));
+                    userEmail.setText(bundle.getString("userEmail"));
                     break;
                 case GET_USER_INFO_FAILED:
                     if (MainActivity.this.hasWindowFocus()) {
@@ -205,19 +220,30 @@ public class MainActivity extends BaseActivity
         //判断是否登录
         token = PreferencesController.getString(PreferencesController.TOKEN);
         refreshToken = PreferencesController.getString(PreferencesController.REFRESH_TOKEN);
+        OkHttpConnection.setToken(token);
+        OkHttpConnection.setRefresh_token(refreshToken);
 
-        new Thread(new Runnable() {
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                OkHttpConnection.login("bolo4963@gmail.com", "456rtyFGHvbn");
+//            }
+//        }).start();
 
-            @Override
-            public void run() {
-                OkHttpConnection.login("bolo4963@gmail.com", "456rtyFGHvbn");
-            }
-        }).start();
         if (token.equals("")) {
             //未登录
+
             // TODO: 2017/1/31 编写登录选项
+        } else if (token.equals("FIRST_TIME")) {
+            //第一次启动应用
+            PreferencesController.setPreferences(PreferencesController.TOKEN, "");
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         } else {
-            
+            // TODO: 2017/2/24 检查token有无过期
+            OkHttpConnection.getUserInfo();
         }
 
         fab.setOnClickListener(new View.OnClickListener() {

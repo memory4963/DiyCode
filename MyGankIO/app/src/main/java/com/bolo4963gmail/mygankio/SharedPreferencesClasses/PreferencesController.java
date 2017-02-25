@@ -26,7 +26,7 @@ public class PreferencesController {
 
         if (sharedPreferences.getString(TOKEN, "111").equals("111")) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(TOKEN, "");
+            editor.putString(TOKEN, "FIRST_TIME");
             editor.putString(REFRESH_TOKEN, "");
             editor.putString(USER_NAME, "");
             editor.putString(USER_MAIL, "");
